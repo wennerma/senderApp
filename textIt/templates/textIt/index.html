@@ -24,7 +24,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Sender</a>
+          <a class="navbar-brand" href="#">TextMe</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -74,8 +74,10 @@
       <div class="row">
         <div class="col-sm-12">
           <h2>About</h2>
-          <p>This is a simple web app to forward links to friend's or yourself through a simple SMS.</p>
-          <p>Currently messages are delivered through Gmail Servers.</p>
+          <p>This is a simple web app to forward links to friends or yourself through a simple text message.  <br>
+             With each message sent a random number will be generated, this code will be unique <br>
+              and appear in the subject line. Currently messages are delivered through Gmail Servers.</p>
+
           <img src="{% static "textIt/images/cell.png" %}" class="img-rounded" alt="Cinque Terre" width="304" height="236">
         </div>
       </div>
@@ -127,10 +129,11 @@
                   provider: $('#id_provider').val(),
                   url_link: $('#id_url_link').val(),
                   receiving_number: $('#id_receiving_number').val(),
+                  message: $('#id_message').val(),
                   csrfmiddlewaretoken: '{{ csrf_token }}'
               },
               success:function(data){
-                var msg = data.receiving_number +" has received your link. "
+                var msg = data.receiving_number +" has received your link. The subject will contain the code: " + data.msgCode;
                 $("#modalBodyText").text(msg);
                 $("#myModal").modal('show');
                 var form = document.getElementById("sendTextForm");
