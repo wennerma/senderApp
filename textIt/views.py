@@ -14,6 +14,7 @@ from .models import Recipient
 #
 def index(request):
 
+
     if request.method == "GET":
         form = RecipientForm()
         contact = ContactForm()
@@ -53,7 +54,8 @@ def send_text(request):
                  [sendToNumber], fail_silently=False)
 
         #save log of text sent to database
-        recipient = Recipient(provider=provider, url_link=url_link, receiving_number=receiving_number)
+        recipient = Recipient(provider=provider, url_link=url_link,
+                              receiving_number=receiving_number, message=optMessage)
         recipient.save()
 
         data = {'provider': provider, 'url_link': url_link, 'receiving_number': receiving_number,
