@@ -1,0 +1,26 @@
+body {
+	position: relative;
+}
+.jumbotron.vertical-center {
+	text-align: center;
+}
+
+.navbar {
+
+    margin-bottom: 0px;
+
+}
+
+.container.vertical-center{
+	text-align: center;
+}
+
+
+.modal-title {
+    text-align: center;
+}
+
+.modal-body {
+    text-align: center;
+
+}
