@@ -20,10 +20,10 @@ class ContactForm(ModelForm):
 
     class Meta:
         model = Contact
-        fields = ['name', 'email', 'message']
+        fields = ['name', 'email', 'contact_message']
         widgets = {
             'name': TextInput(attrs={'placeholder': 'John Smith'}),
             'email': EmailInput(attrs={'placeholder': 'email@provider.com'}),
-            'message': Textarea(attrs={'placeholder': 'Enter text here'}),
+            'contact_message': Textarea(attrs={'placeholder': 'Enter text here'}),
         }
 
