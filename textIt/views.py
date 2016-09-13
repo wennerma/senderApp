@@ -3,6 +3,7 @@ from .forms import RecipientForm, ContactForm
 from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
+import random
 from .models import Contact, Recipient
 
 from .models import Recipient
@@ -38,12 +39,17 @@ def send_text(request):
         provider = request.POST.get('provider', '')
         url_link = request.POST.get('url_link', '')
         receiving_number = request.POST.get('receiving_number', '')
+        optMessage = request.POST.get('message', '')
 
+        #generate random code to send in subject, and display back to browser
+        msgCode = random.randint(1,10000)
+
+        bodyToSend = optMessage + "\n" + url_link
         plainNumber = receiving_number.replace("-", "")
 
         sendToNumber = plainNumber + provider
 
-        send_mail('Link', url_link,  settings.EMAIL_HOST_USER,
+        send_mail(msgCode, bodyToSend,  settings.EMAIL_HOST_USER,
                  [sendToNumber], fail_silently=False)
 
         #save log of text sent to database
@@ -51,7 +57,7 @@ def send_text(request):
         recipient.save()
 
         data = {'provider': provider, 'url_link': url_link, 'receiving_number': receiving_number,
-                'sendToNumber': sendToNumber}
+                'sendToNumber': sendToNumber, 'msgCode': msgCode}
 
 
         return JsonResponse(data)
