@@ -7,10 +7,11 @@ class RecipientForm(ModelForm):
 
     class Meta:
         model = Recipient
-        fields = ['provider','receiving_number','url_link']
+        fields = ['provider','receiving_number','url_link', 'message']
         widgets = {
             'receiving_number': TextInput(attrs={'placeholder': '555-555-5555'}),
-            'url_link': URLInput(attrs={'placeholder': 'www.mylink.com'}),
+            'url_link': URLInput(attrs={'placeholder': 'http://www.mylink.com'}),
+            'message': Textarea(attrs={'placeholder': 'Optional Message Here'}),
         }
 
 
