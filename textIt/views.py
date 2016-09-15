@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from .forms import RecipientForm, ContactForm
+from .forms import RecipientForm, ContactForm, RegRecipientForm, AddContactForm
 from django.http import HttpResponse, JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 import random
 from .models import Contact, Recipient
 
 from .models import Recipient
-
 
 # Home Page
 # If loading the page without form submission, initialize the forms
@@ -88,7 +88,36 @@ def contact(request):
         return JsonResponse(data)
 
 
+def login_user(request):
 
+    form = RegRecipientForm()
+    addContact = AddContactForm()
+    contact = ContactForm()
 
-
+    return render(request, 'textIt/userHome.html', {
+        "form": form,
+        "addContact": addContact,
+        "contact": contact
+    })
+    #
+    # if request.method == "POST":
+    #     username = request.POST['username']
+    #     password = request.POST['password']
+    #     user = authenticate(username=username, password=password)
+    #     if user is not None:
+    #         login(request, user)
+    #
+    #         form = RegRecipientForm()
+    #         addContact = AddContactForm()
+    #         contact = ContactForm()
+    #
+    #
+    #         return render(request, 'textIt/userHome.html', {
+    #             "form": form,
+    #             "addContact": addContact,
+    #             "contact": contact
+    # })
+       # else:
+        #    return render(request, 'music/login.html', {'error_message': 'Invalid login'})
+    #return render(request, 'music/login.html')
 

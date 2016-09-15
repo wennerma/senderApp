@@ -1,0 +1,135 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Sender</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+     <link rel="stylesheet" type="text/css" href="{% static 'textIt/style.css' %}"/>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">TextMe</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#top">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+            <div id="loginFormBlock">
+                {% block loginFormBlock %} {% endblock %}
+            </div>
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div id="texterBlock">
+         {% block texterBlock %} {% endblock %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Your Message Has Been Sent</h4>
+          </div>
+            <div class="modal-body">
+                <p id="modalBodyText"> </p>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="abouttBlock">
+         {% block aboutBlock %} {% endblock %}
+    </div>
+
+    <div id="contactBlock">
+         {% block contactBlock %} {% endblock %}
+    </div>
+
+    </div>
+      <footer>
+        <p>&copy; Designed and built by Matthew Wenner</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'textIt/js/main.js' %}"></script>
+
+    <script type="text/javascript">
+      $(document).on('submit', '.form-horizontal', function(e){
+          e.preventDefault();
+
+          if($('#id_provider').val() != "") {
+            $.ajax ({
+              type: 'POST',
+              url: 'send_text',
+              data:{
+                  provider: $('#id_provider').val(),
+                  url_link: $('#id_url_link').val(),
+                  receiving_number: $('#id_receiving_number').val(),
+                  message: $('#id_message').val(),
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              success:function(data){
+                var msg = data.receiving_number +" has received your link. The subject will contain the code: " + data.msgCode;
+                $("#modalBodyText").text(msg);
+                $("#myModal").modal('show');
+                var form = document.getElementById("sendTextForm");
+                form.reset();
+              }
+          })
+          } else {
+              $.ajax ({
+                type: 'POST',
+                url: 'contact',
+                data:{
+                    name: $('#id_name').val(),
+                    email: $('#id_email').val(),
+                    message: $('#id_contact_message').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success:function(data){
+                  var msg = "Thank you for reaching out " + data.name + ".  We will respond within 24 hours.";
+                  $("#modalBodyText").text(msg);
+                  $("#myModal").modal('show');
+                  var form = document.getElementById("contactForm");
+                  form.reset();
+                }
+              });
+      }
+      });
+    </script>
+
+
+  </body>
+</html>

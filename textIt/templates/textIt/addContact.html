@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+
+<div id="addContact" class="container vertical-center">
+  <div class="container">
+         <div class="col-sm-4 col-sm-offset-4">
+             <h2>Add Contact</h2>
+              <form id="addContactForm" class="form-horizontal" role="form" action="add_contact" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                        {{addContact|crispy}}
+                  <button type="submit" class="btn btn-success">Add</button>
+              </form>
+          </div>
+      </div>
+</div>

@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+
+<div id="contact"class="jumbotron vertical-center">
+  <div class="container">
+         <div class="col-sm-4 col-sm-offset-4">
+             <h2>Contact Us</h2>
+              <form id="contactForm" class="form-horizontal" role="form" action="contact" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                        {{contact|crispy}}
+                  <button type="submit" class="btn btn-success">Submit</button>
+              </form>
+          </div>
+      </div>
+</div>
